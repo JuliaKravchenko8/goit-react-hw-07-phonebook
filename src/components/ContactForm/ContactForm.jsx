@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import css from './contactForm.module.css';
-import { addContact } from 'redux/contacts/contacts-slice';
-import { getFilteredContacts } from 'redux/contacts/contacts-selectors';
+import { addContact } from 'redux/contacts/contacts-operations';
+import { selectContacts } from 'redux/contacts/contacts-selectors';
 import { useSelector, useDispatch } from 'react-redux';
 
 const ContactForm = () => {
   const dispatch = useDispatch();
 
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
-  const contacts = useSelector(getFilteredContacts);
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = event => {
     event.preventDefault();
@@ -23,9 +23,10 @@ const ContactForm = () => {
       return;
     }
 
-    dispatch(addContact({ name, number }));
+    dispatch(addContact({ name, phone }));
+
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -49,12 +50,12 @@ const ContactForm = () => {
       <input
         className={css.input}
         type="tel"
-        name="number"
+        name="phone"
         pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
-        value={number}
-        onChange={event => setNumber(event.target.value)}
+        value={phone}
+        onChange={event => setPhone(event.target.value)}
       />
       <button className={css.btn} type="submit">
         Add Contact
